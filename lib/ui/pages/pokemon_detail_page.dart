@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../domain/models/pokemon_detail.dart';
+import '../../domain/models/pokemon_sprites.dart';
 import '../cubits/pokemon_detail/pokemon_detail_cubit.dart';
 import '../widgets/loading_widget.dart';
 import '../widgets/error_widget.dart' as app_error;
