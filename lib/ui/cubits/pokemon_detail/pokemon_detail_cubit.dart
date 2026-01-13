@@ -3,7 +3,8 @@ import 'package:equatable/equatable.dart';
 import '../../../domain/models/pokemon_detail.dart';
 import '../../../domain/repositories/pokemon_repository.dart';
 import '../../../core/error/failures.dart';
-import 'pokemon_detail_state.dart';
+
+part 'pokemon_detail_state.dart';
 
 class PokemonDetailCubit extends Cubit<PokemonDetailState> {
   final PokemonRepository repository;
