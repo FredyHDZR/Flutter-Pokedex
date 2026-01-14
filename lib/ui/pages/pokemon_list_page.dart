@@ -78,7 +78,7 @@ class _PokemonListPageState extends State<PokemonListPage> {
               controller: _scrollController,
               padding: const EdgeInsets.all(8),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
+                crossAxisCount: 3,
                 childAspectRatio: 0.75,
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 8,
