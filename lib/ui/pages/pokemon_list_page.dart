@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../core/constants/breakpoints.dart';
 import '../../core/theme/app_theme.dart';
 import '../cubits/pokemon_list/pokemon_list_cubit.dart';
 import '../widgets/pokemon_card.dart';
@@ -48,6 +50,18 @@ class _PokemonListPageState extends State<PokemonListPage> {
     }
   }
 
+  int _calculateCrossAxisCount(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    if (kIsWeb) {
+      // En web: 5 columnas para pantallas grandes, 3 para pequeñas
+      return screenWidth >= Breakpoints.tablet ? 5 : 3;
+    }
+
+    // En móvil: siempre 3 columnas
+    return 3;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -91,30 +105,37 @@ class _PokemonListPageState extends State<PokemonListPage> {
               );
             }
 
-            return GridView.builder(
-              controller: _scrollController,
-              padding: const EdgeInsets.all(8),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                childAspectRatio: 0.75,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
-              ),
-              itemCount: state.pokemons.length + (state.isLoadingMore ? 1 : 0),
-              itemBuilder: (context, index) {
-                if (index >= state.pokemons.length) {
-                  return const Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
-                }
+            return LayoutBuilder(
+              builder: (context, constraints) {
+                final crossAxisCount = _calculateCrossAxisCount(context);
 
-                return PokemonCard(
-                  pokemon: state.pokemons[index],
-                  onTap: () {
-                    context.push('/pokemon/${state.pokemons[index].id}');
+                return GridView.builder(
+                  controller: _scrollController,
+                  padding: const EdgeInsets.all(8),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxisCount,
+                    childAspectRatio: 0.75,
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
+                  ),
+                  itemCount:
+                      state.pokemons.length + (state.isLoadingMore ? 1 : 0),
+                  itemBuilder: (context, index) {
+                    if (index >= state.pokemons.length) {
+                      return const Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    }
+
+                    return PokemonCard(
+                      pokemon: state.pokemons[index],
+                      onTap: () {
+                        context.push('/pokemon/${state.pokemons[index].id}');
+                      },
+                    );
                   },
                 );
               },
