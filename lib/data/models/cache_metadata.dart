@@ -1,26 +1,12 @@
-import '../../core/constants/app_constants.dart';
+import 'package:flutter_pokedex/core/constants/app_constants.dart';
 
 class CacheMetadata {
-  final DateTime lastUpdated;
-  final String version;
-  final int totalItems;
-  final Map<String, DateTime> itemTimestamps;
-
   CacheMetadata({
     required this.lastUpdated,
     required this.version,
     required this.totalItems,
     required this.itemTimestamps,
   });
-
-  Map<String, dynamic> toJson() => {
-        'lastUpdated': lastUpdated.toIso8601String(),
-        'version': version,
-        'totalItems': totalItems,
-        'itemTimestamps': itemTimestamps.map(
-          (k, v) => MapEntry(k, v.toIso8601String()),
-        ),
-      };
 
   factory CacheMetadata.fromJson(Map<String, dynamic> json) => CacheMetadata(
         lastUpdated: DateTime.parse(json['lastUpdated'] as String),
@@ -30,6 +16,20 @@ class CacheMetadata {
           (k, v) => MapEntry(k, DateTime.parse(v as String)),
         ),
       );
+
+  final DateTime lastUpdated;
+  final String version;
+  final int totalItems;
+  final Map<String, DateTime> itemTimestamps;
+
+  Map<String, dynamic> toJson() => {
+        'lastUpdated': lastUpdated.toIso8601String(),
+        'version': version,
+        'totalItems': totalItems,
+        'itemTimestamps': itemTimestamps.map(
+          (k, v) => MapEntry(k, v.toIso8601String()),
+        ),
+      };
 
   bool isExpired({Duration? ttl}) {
     final maxAge = ttl ?? AppConstants.cacheTTL;
@@ -44,4 +44,3 @@ class CacheMetadata {
     return DateTime.now().difference(timestamp) > maxAge;
   }
 }
-

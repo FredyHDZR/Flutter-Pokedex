@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
-import '../../core/network/dio_client.dart';
-import '../../core/constants/api_constants.dart';
-import '../../core/error/exceptions.dart';
-import '../../domain/models/pokemon.dart';
-import '../../domain/models/pokemon_detail.dart';
-import '../models/pokemon_list_response_dto.dart';
-import '../models/pokemon_detail_dto.dart';
+import 'package:flutter_pokedex/core/constants/api_constants.dart';
+import 'package:flutter_pokedex/core/error/exceptions.dart';
+import 'package:flutter_pokedex/core/network/dio_client.dart';
+import 'package:flutter_pokedex/data/models/pokemon_detail_dto.dart';
+import 'package:flutter_pokedex/data/models/pokemon_list_response_dto.dart';
+import 'package:flutter_pokedex/domain/models/pokemon.dart';
+import 'package:flutter_pokedex/domain/models/pokemon_detail.dart';
 
 abstract class PokemonRemoteDataSource {
   Future<List<Pokemon>> getPokemonList({
@@ -17,9 +17,10 @@ abstract class PokemonRemoteDataSource {
 }
 
 class PokemonRemoteDataSourceImpl implements PokemonRemoteDataSource {
-  final DioClient dioClient;
-
+  
   PokemonRemoteDataSourceImpl({required this.dioClient});
+
+  final DioClient dioClient;
 
   @override
   Future<List<Pokemon>> getPokemonList({
@@ -80,4 +81,3 @@ class PokemonRemoteDataSourceImpl implements PokemonRemoteDataSource {
     }
   }
 }
-

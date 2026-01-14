@@ -1,21 +1,11 @@
-import '../../core/utils/json_validator.dart';
-import '../../domain/models/pokemon_detail.dart';
-import '../../domain/models/pokemon_type.dart';
-import '../../domain/models/pokemon_sprites.dart';
-import '../../domain/models/pokemon_stat.dart';
-import '../../domain/models/pokemon_ability.dart';
+import 'package:flutter_pokedex/core/utils/json_validator.dart';
+import 'package:flutter_pokedex/domain/models/pokemon_ability.dart';
+import 'package:flutter_pokedex/domain/models/pokemon_detail.dart';
+import 'package:flutter_pokedex/domain/models/pokemon_sprites.dart';
+import 'package:flutter_pokedex/domain/models/pokemon_stat.dart';
+import 'package:flutter_pokedex/domain/models/pokemon_type.dart';
 
 class PokemonDetailDto {
-  final int id;
-  final String name;
-  final int height;
-  final int weight;
-  final int baseExperience;
-  final List<PokemonTypeDto> types;
-  final PokemonSpritesDto sprites;
-  final List<PokemonStatDto> stats;
-  final List<PokemonAbilityDto> abilities;
-
   PokemonDetailDto({
     required this.id,
     required this.name,
@@ -57,6 +47,16 @@ class PokemonDetailDto {
     );
   }
 
+  final int id;
+  final String name;
+  final int height;
+  final int weight;
+  final int baseExperience;
+  final List<PokemonTypeDto> types;
+  final PokemonSpritesDto sprites;
+  final List<PokemonStatDto> stats;
+  final List<PokemonAbilityDto> abilities;
+
   PokemonDetail toDomain() {
     return PokemonDetail(
       id: id,
@@ -73,9 +73,6 @@ class PokemonDetailDto {
 }
 
 class PokemonTypeDto {
-  final int slot;
-  final TypeInfoDto type;
-
   PokemonTypeDto({
     required this.slot,
     required this.type,
@@ -90,6 +87,9 @@ class PokemonTypeDto {
     );
   }
 
+  final int slot;
+  final TypeInfoDto type;
+
   PokemonType toDomain() {
     return PokemonType(
       slot: slot,
@@ -99,9 +99,6 @@ class PokemonTypeDto {
 }
 
 class TypeInfoDto {
-  final String name;
-  final String url;
-
   TypeInfoDto({
     required this.name,
     required this.url,
@@ -114,6 +111,9 @@ class TypeInfoDto {
     );
   }
 
+  final String name;
+  final String url;
+
   TypeInfo toDomain() {
     return TypeInfo(
       name: name,
@@ -123,15 +123,6 @@ class TypeInfoDto {
 }
 
 class PokemonSpritesDto {
-  final String? frontDefault;
-  final String? backDefault;
-  final String? frontShiny;
-  final String? backShiny;
-  final String? frontFemale;
-  final String? backFemale;
-  final String? frontShinyFemale;
-  final String? backShinyFemale;
-  final PokemonSpritesOtherDto? other;
 
   PokemonSpritesDto({
     this.frontDefault,
@@ -162,6 +153,15 @@ class PokemonSpritesDto {
           : null,
     );
   }
+  final String? frontDefault;
+  final String? backDefault;
+  final String? frontShiny;
+  final String? backShiny;
+  final String? frontFemale;
+  final String? backFemale;
+  final String? frontShinyFemale;
+  final String? backShinyFemale;
+  final PokemonSpritesOtherDto? other;
 
   PokemonSprites toDomain() {
     return PokemonSprites(
@@ -179,7 +179,6 @@ class PokemonSpritesDto {
 }
 
 class PokemonSpritesOtherDto {
-  final PokemonOfficialArtworkDto? officialArtwork;
 
   PokemonSpritesOtherDto({
     this.officialArtwork,
@@ -194,6 +193,7 @@ class PokemonSpritesOtherDto {
           : null,
     );
   }
+  final PokemonOfficialArtworkDto? officialArtwork;
 
   PokemonSpritesOther toDomain() {
     return PokemonSpritesOther(
@@ -203,8 +203,6 @@ class PokemonSpritesOtherDto {
 }
 
 class PokemonOfficialArtworkDto {
-  final String? frontDefault;
-  final String? frontShiny;
 
   PokemonOfficialArtworkDto({
     this.frontDefault,
@@ -217,6 +215,8 @@ class PokemonOfficialArtworkDto {
       frontShiny: json['front_shiny'] as String?,
     );
   }
+  final String? frontDefault;
+  final String? frontShiny;
 
   PokemonOfficialArtwork toDomain() {
     return PokemonOfficialArtwork(
@@ -227,10 +227,6 @@ class PokemonOfficialArtworkDto {
 }
 
 class PokemonStatDto {
-  final int baseStat;
-  final int effort;
-  final StatInfoDto stat;
-
   PokemonStatDto({
     required this.baseStat,
     required this.effort,
@@ -247,6 +243,10 @@ class PokemonStatDto {
     );
   }
 
+  final int baseStat;
+  final int effort;
+  final StatInfoDto stat;
+
   PokemonStat toDomain() {
     return PokemonStat(
       baseStat: baseStat,
@@ -257,9 +257,6 @@ class PokemonStatDto {
 }
 
 class StatInfoDto {
-  final String name;
-  final String url;
-
   StatInfoDto({
     required this.name,
     required this.url,
@@ -271,6 +268,8 @@ class StatInfoDto {
       url: JsonValidator.validateString(json['url'], 'url'),
     );
   }
+  final String name;
+  final String url;
 
   StatInfo toDomain() {
     return StatInfo(
@@ -281,10 +280,6 @@ class StatInfoDto {
 }
 
 class PokemonAbilityDto {
-  final AbilityInfoDto ability;
-  final bool isHidden;
-  final int slot;
-
   PokemonAbilityDto({
     required this.ability,
     required this.isHidden,
@@ -301,6 +296,10 @@ class PokemonAbilityDto {
     );
   }
 
+  final AbilityInfoDto ability;
+  final bool isHidden;
+  final int slot;
+
   PokemonAbility toDomain() {
     return PokemonAbility(
       ability: ability.toDomain(),
@@ -311,9 +310,6 @@ class PokemonAbilityDto {
 }
 
 class AbilityInfoDto {
-  final String name;
-  final String url;
-
   AbilityInfoDto({
     required this.name,
     required this.url,
@@ -326,6 +322,9 @@ class AbilityInfoDto {
     );
   }
 
+  final String name;
+  final String url;
+
   AbilityInfo toDomain() {
     return AbilityInfo(
       name: name,
@@ -333,4 +332,3 @@ class AbilityInfoDto {
     );
   }
 }
-

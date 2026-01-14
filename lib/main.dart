@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'core/injection/injection_container.dart' as di;
-import 'core/theme/app_theme.dart';
-import 'ui/routes/app_router.dart';
-import 'ui/cubits/pokemon_list/pokemon_list_cubit.dart';
-import 'ui/cubits/pokemon_detail/pokemon_detail_cubit.dart';
+import 'package:flutter_pokedex/core/injection/injection_container.dart' as di;
+import 'package:flutter_pokedex/core/theme/app_theme.dart';
+import 'package:flutter_pokedex/ui/cubits/pokemon_detail/pokemon_detail_cubit.dart';
+import 'package:flutter_pokedex/ui/cubits/pokemon_list/pokemon_list_cubit.dart';
+import 'package:flutter_pokedex/ui/routes/app_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

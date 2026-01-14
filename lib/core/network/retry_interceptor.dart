@@ -1,23 +1,22 @@
-import 'package:dio/dio.dart';
 import 'dart:io';
-import '../constants/app_constants.dart';
-import '../error/failures.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_pokedex/core/constants/app_constants.dart';
 
 class RetryInterceptor extends Interceptor {
-  final Dio dio;
-  final int retries;
-  final List<Duration> retryDelays;
-
   RetryInterceptor({
     required this.dio,
     this.retries = AppConstants.maxRetries,
     List<Duration>? retryDelays,
   }) : retryDelays = retryDelays ??
             [
-              Duration(seconds: 1),
-              Duration(seconds: 2),
-              Duration(seconds: 3),
+              const Duration(seconds: 1),
+              const Duration(seconds: 2),
+              const Duration(seconds: 3),
             ];
+
+  final Dio dio;
+  final int retries;
+  final List<Duration> retryDelays;
 
   @override
   void onError(
@@ -57,4 +56,3 @@ class RetryInterceptor extends Interceptor {
             error.response!.statusCode! >= 500);
   }
 }
-

@@ -1,16 +1,11 @@
-import '../../domain/models/pokemon.dart';
+import 'package:flutter_pokedex/domain/models/pokemon.dart';
 
 class PokemonListResponseDto {
-  final int count;
-  final String? next;
-  final String? previous;
-  final List<PokemonListItemDto> results;
-
   PokemonListResponseDto({
     required this.count,
+    required this.results,
     this.next,
     this.previous,
-    required this.results,
   });
 
   factory PokemonListResponseDto.fromJson(Map<String, dynamic> json) {
@@ -19,17 +14,19 @@ class PokemonListResponseDto {
       next: json['next'] as String?,
       previous: json['previous'] as String?,
       results: (json['results'] as List<dynamic>)
-          .map((item) =>
-              PokemonListItemDto.fromJson(item as Map<String, dynamic>))
+          .map(
+            (item) => PokemonListItemDto.fromJson(item as Map<String, dynamic>),
+          )
           .toList(),
     );
   }
+  final int count;
+  final String? next;
+  final String? previous;
+  final List<PokemonListItemDto> results;
 }
 
 class PokemonListItemDto {
-  final String name;
-  final String url;
-
   PokemonListItemDto({
     required this.name,
     required this.url,
@@ -41,6 +38,8 @@ class PokemonListItemDto {
       url: json['url'] as String,
     );
   }
+  final String name;
+  final String url;
 
   int extractId() {
     final uri = Uri.parse(url);
@@ -66,4 +65,3 @@ class PokemonListItemDto {
     );
   }
 }
-

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import '../../domain/models/pokemon_stat.dart';
+import 'package:flutter_pokedex/domain/models/pokemon_stat.dart';
 
 class PokemonStatBar extends StatelessWidget {
-  final PokemonStat stat;
+  const PokemonStatBar({required this.stat, super.key});
 
-  const PokemonStatBar({required this.stat});
+  final PokemonStat stat;
 
   @override
   Widget build(BuildContext context) {
-    final maxStat = 255;
+    const maxStat = 255;
     final percentage = (stat.baseStat / maxStat).clamp(0.0, 1.0);
 
     return Padding(
@@ -58,4 +58,3 @@ class PokemonStatBar extends StatelessWidget {
     }
   }
 }
-

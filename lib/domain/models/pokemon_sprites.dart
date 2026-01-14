@@ -49,4 +49,3 @@ class PokemonOfficialArtwork with _$PokemonOfficialArtwork {
   factory PokemonOfficialArtwork.fromJson(Map<String, dynamic> json) =>
       _$PokemonOfficialArtworkFromJson(json);
 }
-

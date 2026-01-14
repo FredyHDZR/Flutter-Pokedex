@@ -17,4 +17,3 @@ class HiveService {
   static Box get pokemonDetailBox => Hive.box(pokemonDetailBoxName);
   static Box get metadataBox => Hive.box(cacheMetadataBoxName);
 }
-

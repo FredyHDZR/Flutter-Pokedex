@@ -1,22 +1,22 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter_pokedex/core/database/hive_service.dart';
+import 'package:flutter_pokedex/core/network/dio_client.dart';
+import 'package:flutter_pokedex/core/network/network_info.dart';
+import 'package:flutter_pokedex/data/datasources/pokemon_local_datasource.dart';
+import 'package:flutter_pokedex/data/datasources/pokemon_remote_datasource.dart';
+import 'package:flutter_pokedex/data/repositories/pokemon_repository_impl.dart';
+import 'package:flutter_pokedex/domain/repositories/pokemon_repository.dart';
+import 'package:flutter_pokedex/ui/cubits/pokemon_detail/pokemon_detail_cubit.dart';
+import 'package:flutter_pokedex/ui/cubits/pokemon_list/pokemon_list_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
-import '../network/dio_client.dart';
-import '../network/network_info.dart';
-import '../database/hive_service.dart';
-import '../../data/datasources/pokemon_remote_datasource.dart';
-import '../../data/datasources/pokemon_local_datasource.dart';
-import '../../data/repositories/pokemon_repository_impl.dart';
-import '../../domain/repositories/pokemon_repository.dart';
-import '../../ui/cubits/pokemon_list/pokemon_list_cubit.dart';
-import '../../ui/cubits/pokemon_detail/pokemon_detail_cubit.dart';
 
 final sl = GetIt.instance;
 
 Future<void> init() async {
   await HiveService.init();
 
-  sl.registerLazySingleton<DioClient>(() => DioClient());
+  sl.registerLazySingleton<DioClient>(DioClient.new);
 
   sl.registerLazySingleton<NetworkInfo>(
     () => NetworkInfoImpl(
@@ -74,4 +74,3 @@ Future<void> init() async {
     ),
   );
 }
-

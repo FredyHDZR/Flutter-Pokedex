@@ -1,5 +1,5 @@
-import 'exceptions.dart';
-import 'failures.dart';
+import 'package:flutter_pokedex/core/error/exceptions.dart';
+import 'package:flutter_pokedex/core/error/failures.dart';
 
 class FailureMapper {
   static Failure mapExceptionToFailure(Exception exception) {
@@ -13,8 +13,8 @@ class FailureMapper {
       return NotFoundFailure(message: exception.message);
     } else {
       return ServerFailure(
-          message: 'Error inesperado: ${exception.toString()}');
+        message: 'Error inesperado: ${exception.toString()}',
+      );
     }
   }
 }
-

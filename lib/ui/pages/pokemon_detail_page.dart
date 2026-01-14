@@ -1,23 +1,25 @@
 import 'dart:ui';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import '../../core/theme/app_theme.dart';
-import '../../domain/models/pokemon_detail.dart';
-import '../../domain/models/pokemon_sprites.dart';
-import '../cubits/pokemon_detail/pokemon_detail_cubit.dart';
-import '../widgets/loading_widget.dart';
-import '../widgets/error_widget.dart' as app_error;
-import '../widgets/pokemon_type_chip.dart';
-import '../widgets/pokemon_stat_bar.dart';
+import 'package:flutter_pokedex/core/theme/app_theme.dart';
+import 'package:flutter_pokedex/domain/models/pokemon_detail.dart';
+import 'package:flutter_pokedex/domain/models/pokemon_sprites.dart';
+import 'package:flutter_pokedex/ui/cubits/pokemon_detail/pokemon_detail_cubit.dart';
+import 'package:flutter_pokedex/ui/widgets/error_widget.dart' as app_error;
+import 'package:flutter_pokedex/ui/widgets/loading_widget.dart';
+import 'package:flutter_pokedex/ui/widgets/pokemon_stat_bar.dart';
+import 'package:flutter_pokedex/ui/widgets/pokemon_type_chip.dart';
 
 class PokemonDetailPage extends StatelessWidget {
-  final int pokemonId;
 
   const PokemonDetailPage({
     required this.pokemonId,
     super.key,
   });
+  
+  final int pokemonId;
 
   @override
   Widget build(BuildContext context) {
@@ -27,15 +29,25 @@ class PokemonDetailPage extends StatelessWidget {
         body: BlocBuilder<PokemonDetailCubit, PokemonDetailState>(
           builder: (context, state) {
             if (state is PokemonDetailLoading) {
-              return const LoadingWidget();
+              return Container(
+                decoration: const BoxDecoration(
+                  gradient: AppTheme.backgroundGradient,
+                ),
+                child: const LoadingWidget(),
+              );
             }
 
             if (state is PokemonDetailError) {
-              return app_error.ErrorWidget(
-                message: state.message,
-                onRetry: () => context
-                    .read<PokemonDetailCubit>()
-                    .loadPokemonDetail(pokemonId),
+              return Container(
+                decoration: const BoxDecoration(
+                  gradient: AppTheme.backgroundGradient,
+                ),
+                child: app_error.ErrorWidget(
+                  message: state.message,
+                  onRetry: () => context
+                      .read<PokemonDetailCubit>()
+                      .loadPokemonDetail(pokemonId),
+                ),
               );
             }
 
@@ -43,7 +55,12 @@ class PokemonDetailPage extends StatelessWidget {
               return _buildDetailContent(context, state.pokemon);
             }
 
-            return const SizedBox.shrink();
+            return Container(
+              decoration: const BoxDecoration(
+                gradient: AppTheme.backgroundGradient,
+              ),
+              child: const SizedBox.shrink(),
+            );
           },
         ),
       ),
@@ -63,7 +80,8 @@ class PokemonDetailPage extends StatelessWidget {
             backgroundColor: Colors.transparent,
             flexibleSpace: LayoutBuilder(
               builder: (context, constraints) {
-                final isCollapsed = constraints.biggest.height <= kToolbarHeight;
+                final isCollapsed =
+                    constraints.biggest.height <= kToolbarHeight;
                 return Stack(
                   fit: StackFit.expand,
                   children: [
@@ -94,7 +112,7 @@ class PokemonDetailPage extends StatelessWidget {
                                 end: Alignment.bottomCenter,
                                 colors: [
                                   Colors.transparent,
-                                  Colors.black.withOpacity(0.3),
+                                  Colors.black.withValues(alpha: 0.3),
                                 ],
                               ),
                             ),
@@ -107,7 +125,7 @@ class PokemonDetailPage extends StatelessWidget {
                         child: BackdropFilter(
                           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                           child: Container(
-                            color: Colors.white.withOpacity(0.1),
+                            color: Colors.white.withValues(alpha: 0.1),
                           ),
                         ),
                       ),
@@ -116,24 +134,24 @@ class PokemonDetailPage extends StatelessWidget {
               },
             ),
           ),
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildInfoSection(context, pokemon),
-                const SizedBox(height: 24),
-                _buildTypesSection(context, pokemon),
-                const SizedBox(height: 24),
-                _buildStatsSection(context, pokemon),
-                const SizedBox(height: 24),
-                _buildAbilitiesSection(context, pokemon),
-              ],
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildInfoSection(context, pokemon),
+                  const SizedBox(height: 24),
+                  _buildTypesSection(context, pokemon),
+                  const SizedBox(height: 24),
+                  _buildStatsSection(context, pokemon),
+                  const SizedBox(height: 24),
+                  _buildAbilitiesSection(context, pokemon),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
       ),
     );
   }
@@ -223,8 +241,8 @@ class PokemonDetailPage extends StatelessWidget {
               spacing: 8,
               runSpacing: 8,
               children: pokemon.types
-                  .map((type) => PokemonTypeChip(pokemonType: type))
-                  .toList(),
+                .map((type) => PokemonTypeChip(pokemonType: type))
+                .toList(),
             ),
           ],
         ),
@@ -276,9 +294,8 @@ class PokemonDetailPage extends StatelessWidget {
                   ability.ability.name.toUpperCase(),
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-                subtitle: ability.isHidden
-                    ? const Text('Habilidad oculta')
-                    : null,
+                subtitle:
+                    ability.isHidden ? const Text('Habilidad oculta') : null,
               ),
             ),
           ],
@@ -287,4 +304,3 @@ class PokemonDetailPage extends StatelessWidget {
     );
   }
 }
-

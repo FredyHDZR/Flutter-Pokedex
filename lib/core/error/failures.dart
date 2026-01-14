@@ -1,6 +1,6 @@
 abstract class Failure {
-  final String message;
   Failure({required this.message});
+  final String message;
 }
 
 class ServerFailure extends Failure {
@@ -18,4 +18,3 @@ class NetworkFailure extends Failure {
 class NotFoundFailure extends Failure {
   NotFoundFailure({required super.message});
 }
-

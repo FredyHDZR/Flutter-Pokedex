@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../domain/models/pokemon_type.dart';
+import 'package:flutter_pokedex/domain/models/pokemon_type.dart';
 
 class PokemonTypeChip extends StatelessWidget {
-  final PokemonType pokemonType;
 
-  const PokemonTypeChip({required this.pokemonType});
+  const PokemonTypeChip({required this.pokemonType, super.key});
+  final PokemonType pokemonType;
 
   Color _getTypeColor(String typeName) {
     switch (typeName.toLowerCase()) {
@@ -68,4 +68,3 @@ class PokemonTypeChip extends StatelessWidget {
     );
   }
 }
-

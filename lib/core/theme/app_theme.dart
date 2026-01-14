@@ -17,24 +17,21 @@ class AppTheme {
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(
         seedColor: gradientEnd,
-        brightness: Brightness.light,
       ),
       scaffoldBackgroundColor: Colors.transparent,
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         backgroundColor: gradientStart,
         elevation: 0,
         scrolledUnderElevation: 0,
         foregroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.white),
-        titleTextStyle: const TextStyle(
+        iconTheme: IconThemeData(color: Colors.white),
+        titleTextStyle: TextStyle(
           color: Colors.white,
           fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
-        systemOverlayStyle: null,
         surfaceTintColor: Colors.transparent,
       ),
     );
   }
 }
-

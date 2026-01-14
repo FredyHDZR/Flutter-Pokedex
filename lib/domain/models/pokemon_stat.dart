@@ -46,4 +46,3 @@ extension StatInfoExtension on StatInfo {
     }
   }
 }
-

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class LoadingWidget extends StatelessWidget {
-  final String? message;
 
-  const LoadingWidget({this.message});
+  const LoadingWidget({this.message, super.key});
+
+  final String? message;
 
   @override
   Widget build(BuildContext context) {
@@ -21,4 +22,3 @@ class LoadingWidget extends StatelessWidget {
     );
   }
 }
-

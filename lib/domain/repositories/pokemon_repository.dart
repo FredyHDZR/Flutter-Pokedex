@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import '../models/pokemon.dart';
-import '../models/pokemon_detail.dart';
-import '../../core/error/failures.dart';
+import 'package:flutter_pokedex/core/error/failures.dart';
+import 'package:flutter_pokedex/domain/models/pokemon.dart';
+import 'package:flutter_pokedex/domain/models/pokemon_detail.dart';
 
 abstract class PokemonRepository {
   Future<Either<Failure, List<Pokemon>>> getPokemonList({
@@ -13,4 +13,3 @@ abstract class PokemonRepository {
     required int id,
   });
 }
-
