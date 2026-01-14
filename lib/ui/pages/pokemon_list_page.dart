@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../cubits/pokemon_list/pokemon_list_cubit.dart';
-import '../cubits/pokemon_list/pokemon_list_state.dart';
 import '../widgets/pokemon_card.dart';
 import '../widgets/loading_widget.dart';
 import '../widgets/error_widget.dart' as app_error;
@@ -19,7 +19,6 @@ class _PokemonListPageState extends State<PokemonListPage> {
   @override
   void initState() {
     super.initState();
-    context.read<PokemonListCubit>().loadPokemons();
     _scrollController.addListener(_onScroll);
   }
 
@@ -39,11 +38,13 @@ class _PokemonListPageState extends State<PokemonListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Pokédex'),
-      ),
-      body: BlocBuilder<PokemonListCubit, PokemonListState>(
+    return BlocProvider(
+      create: (_) => context.read<PokemonListCubit>()..loadPokemons(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Pokédex'),
+        ),
+        body: BlocBuilder<PokemonListCubit, PokemonListState>(
         builder: (context, state) {
           if (state is PokemonListLoading) {
             return const LoadingWidget();
@@ -77,7 +78,7 @@ class _PokemonListPageState extends State<PokemonListPage> {
               controller: _scrollController,
               padding: const EdgeInsets.all(8),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
+                crossAxisCount: 3,
                 childAspectRatio: 0.75,
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 8,
@@ -94,10 +95,9 @@ class _PokemonListPageState extends State<PokemonListPage> {
                 }
 
                 return PokemonCard(
-                  key: ValueKey(state.pokemons[index].id),
                   pokemon: state.pokemons[index],
                   onTap: () {
-                    // Navegación se implementará después
+                    context.push('/pokemon/${state.pokemons[index].id}');
                   },
                 );
               },
@@ -106,6 +106,7 @@ class _PokemonListPageState extends State<PokemonListPage> {
 
           return const SizedBox.shrink();
         },
+        ),
       ),
     );
   }

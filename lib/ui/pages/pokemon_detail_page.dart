@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import '../../domain/models/pokemon_detail.dart';
+import '../../domain/models/pokemon_sprites.dart';
 import '../cubits/pokemon_detail/pokemon_detail_cubit.dart';
 import '../widgets/loading_widget.dart';
 import '../widgets/error_widget.dart' as app_error;
@@ -17,8 +19,8 @@ class PokemonDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => context.read<PokemonDetailCubit>()..loadPokemonDetail(pokemonId),
+    return BlocProvider.value(
+      value: context.read<PokemonDetailCubit>()..loadPokemonDetail(pokemonId),
       child: Scaffold(
         body: BlocBuilder<PokemonDetailCubit, PokemonDetailState>(
           builder: (context, state) {
@@ -46,7 +48,7 @@ class PokemonDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailContent(BuildContext context, pokemon) {
+  Widget _buildDetailContent(BuildContext context, PokemonDetail pokemon) {
     return CustomScrollView(
       slivers: [
         SliverAppBar(
@@ -91,7 +93,7 @@ class PokemonDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoSection(BuildContext context, pokemon) {
+  Widget _buildInfoSection(BuildContext context, PokemonDetail pokemon) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -158,7 +160,7 @@ class PokemonDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _buildTypesSection(BuildContext context, pokemon) {
+  Widget _buildTypesSection(BuildContext context, PokemonDetail pokemon) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -185,7 +187,7 @@ class PokemonDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _buildStatsSection(BuildContext context, pokemon) {
+  Widget _buildStatsSection(BuildContext context, PokemonDetail pokemon) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -206,7 +208,7 @@ class PokemonDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _buildAbilitiesSection(BuildContext context, pokemon) {
+  Widget _buildAbilitiesSection(BuildContext context, PokemonDetail pokemon) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
