@@ -1,6 +1,8 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import '../../core/theme/app_theme.dart';
 import '../../domain/models/pokemon_detail.dart';
 import '../../domain/models/pokemon_sprites.dart';
 import '../cubits/pokemon_detail/pokemon_detail_cubit.dart';
@@ -49,29 +51,71 @@ class PokemonDetailPage extends StatelessWidget {
   }
 
   Widget _buildDetailContent(BuildContext context, PokemonDetail pokemon) {
-    return CustomScrollView(
-      slivers: [
-        SliverAppBar(
-          expandedHeight: 200,
-          pinned: true,
-          flexibleSpace: FlexibleSpaceBar(
-            title: Text(
-              pokemon.name.toUpperCase(),
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            background: CachedNetworkImage(
-              imageUrl: pokemon.sprites.bestImage,
-              fit: BoxFit.cover,
-              placeholder: (context, url) => const Center(
-                child: CircularProgressIndicator(),
-              ),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: AppTheme.backgroundGradient,
+      ),
+      child: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 200,
+            pinned: true,
+            backgroundColor: Colors.transparent,
+            flexibleSpace: LayoutBuilder(
+              builder: (context, constraints) {
+                final isCollapsed = constraints.biggest.height <= kToolbarHeight;
+                return Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    FlexibleSpaceBar(
+                      title: Text(
+                        pokemon.name.toUpperCase(),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      background: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          CachedNetworkImage(
+                            imageUrl: pokemon.sprites.bestImage,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Colors.transparent,
+                                  Colors.black.withOpacity(0.3),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (isCollapsed)
+                      ClipRRect(
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                          child: Container(
+                            color: Colors.white.withOpacity(0.1),
+                          ),
+                        ),
+                      ),
+                  ],
+                );
+              },
             ),
           ),
-        ),
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -90,6 +134,7 @@ class PokemonDetailPage extends StatelessWidget {
           ),
         ),
       ],
+      ),
     );
   }
 

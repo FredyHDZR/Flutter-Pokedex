@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../core/theme/app_theme.dart';
 import '../cubits/pokemon_list/pokemon_list_cubit.dart';
 import '../widgets/pokemon_card.dart';
 import '../widgets/loading_widget.dart';
 import '../widgets/error_widget.dart' as app_error;
+import '../widgets/blur_app_bar.dart';
 
 class PokemonListPage extends StatefulWidget {
   const PokemonListPage({super.key});
@@ -15,6 +17,7 @@ class PokemonListPage extends StatefulWidget {
 
 class _PokemonListPageState extends State<PokemonListPage> {
   final ScrollController _scrollController = ScrollController();
+  bool _isScrolled = false;
 
   @override
   void initState() {
@@ -23,6 +26,7 @@ class _PokemonListPageState extends State<PokemonListPage> {
   }
 
   void _onScroll() {
+    // Detectar scroll para paginación
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent * 0.8) {
       final cubit = context.read<PokemonListCubit>();
@@ -34,6 +38,14 @@ class _PokemonListPageState extends State<PokemonListPage> {
         cubit.loadMorePokemons();
       }
     }
+
+    // Detectar scroll para blur del AppBar
+    final newIsScrolled = _scrollController.position.pixels > 0;
+    if (newIsScrolled != _isScrolled) {
+      setState(() {
+        _isScrolled = newIsScrolled;
+      });
+    }
   }
 
   @override
@@ -41,10 +53,15 @@ class _PokemonListPageState extends State<PokemonListPage> {
     return BlocProvider(
       create: (_) => context.read<PokemonListCubit>()..loadPokemons(),
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Pokédex'),
+        appBar: BlurAppBar(
+          title: 'Pokédex',
+          isScrolled: _isScrolled,
         ),
-        body: BlocBuilder<PokemonListCubit, PokemonListState>(
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: AppTheme.backgroundGradient,
+          ),
+          child: BlocBuilder<PokemonListCubit, PokemonListState>(
         builder: (context, state) {
           if (state is PokemonListLoading) {
             return const LoadingWidget();
@@ -106,6 +123,7 @@ class _PokemonListPageState extends State<PokemonListPage> {
 
           return const SizedBox.shrink();
         },
+          ),
         ),
       ),
     );
