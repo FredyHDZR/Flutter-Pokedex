@@ -25,4 +25,3 @@ class AbilityInfo with _$AbilityInfo {
   factory AbilityInfo.fromJson(Map<String, dynamic> json) =>
       _$AbilityInfoFromJson(json);
 }
-

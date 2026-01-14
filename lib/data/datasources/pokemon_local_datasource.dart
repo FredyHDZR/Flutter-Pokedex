@@ -1,9 +1,10 @@
 import 'dart:convert';
+
+import 'package:flutter_pokedex/core/error/exceptions.dart';
+import 'package:flutter_pokedex/data/models/cache_metadata.dart';
+import 'package:flutter_pokedex/domain/models/pokemon.dart';
+import 'package:flutter_pokedex/domain/models/pokemon_detail.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import '../../core/error/exceptions.dart';
-import '../../domain/models/pokemon.dart';
-import '../../domain/models/pokemon_detail.dart';
-import '../models/cache_metadata.dart';
 
 abstract class PokemonLocalDataSource {
   Future<List<Pokemon>> getCachedPokemonList({
@@ -23,15 +24,16 @@ abstract class PokemonLocalDataSource {
 }
 
 class PokemonLocalDataSourceImpl implements PokemonLocalDataSource {
-  final Box pokemonBox;
-  final Box detailBox;
-  final Box metadataBox;
-
+  
   PokemonLocalDataSourceImpl({
     required this.pokemonBox,
     required this.detailBox,
     required this.metadataBox,
   });
+
+  final Box pokemonBox;
+  final Box detailBox;
+  final Box metadataBox;
 
   @override
   Future<List<Pokemon>> getCachedPokemonList({
@@ -162,4 +164,3 @@ class PokemonLocalDataSourceImpl implements PokemonLocalDataSource {
     return pokemonBox.isNotEmpty || detailBox.isNotEmpty;
   }
 }
-

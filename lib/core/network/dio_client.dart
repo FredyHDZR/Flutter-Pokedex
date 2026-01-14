@@ -1,13 +1,12 @@
-import 'package:dio/dio.dart';
 import 'dart:io';
-import 'package:flutter/foundation.dart';
-import '../constants/api_constants.dart';
-import '../constants/app_constants.dart';
-import '../error/failures.dart';
-import 'retry_interceptor.dart';
+
+import 'package:dio/dio.dart';
+import 'package:flutter_pokedex/core/constants/api_constants.dart';
+import 'package:flutter_pokedex/core/constants/app_constants.dart';
+import 'package:flutter_pokedex/core/error/failures.dart';
+import 'package:flutter_pokedex/core/network/retry_interceptor.dart';
 
 class DioClient {
-  late final Dio _dio;
 
   DioClient() {
     _dio = Dio(
@@ -30,12 +29,12 @@ class DioClient {
 
     _setupInterceptors();
   }
+  late final Dio _dio;
 
   void _setupInterceptors() {
     _dio.interceptors.add(
       RetryInterceptor(
         dio: _dio,
-        retries: AppConstants.maxRetries,
       ),
     );
 
@@ -97,4 +96,3 @@ class DioClient {
 
   Dio get dio => _dio;
 }
-

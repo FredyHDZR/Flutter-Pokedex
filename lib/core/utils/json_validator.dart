@@ -1,4 +1,4 @@
-import '../error/exceptions.dart';
+import 'package:flutter_pokedex/core/error/exceptions.dart';
 
 class JsonValidator {
   static T? validateAndParse<T>(
@@ -88,4 +88,3 @@ class JsonValidator {
     );
   }
 }
-

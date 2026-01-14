@@ -1,7 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
-import '../constants/api_constants.dart';
-import '../constants/app_constants.dart';
+import 'package:flutter_pokedex/core/constants/api_constants.dart';
 
 abstract class NetworkInfo {
   Future<bool> get isConnected;
@@ -9,13 +8,14 @@ abstract class NetworkInfo {
 }
 
 class NetworkInfoImpl implements NetworkInfo {
-  final Connectivity connectivity;
-  final Dio dio;
 
   NetworkInfoImpl({
     required this.connectivity,
     required this.dio,
   });
+  
+  final Connectivity connectivity;
+  final Dio dio;
 
   @override
   Future<bool> get isConnected async {
@@ -29,8 +29,8 @@ class NetworkInfoImpl implements NetworkInfo {
       final response = await dio.get(
         ApiConstants.baseUrl,
         options: Options(
-          receiveTimeout: Duration(seconds: 3),
-          sendTimeout: Duration(seconds: 3),
+          receiveTimeout: const Duration(seconds: 3),
+          sendTimeout: const Duration(seconds: 3),
         ),
       );
       return response.statusCode == 200;
@@ -44,4 +44,3 @@ class NetworkInfoImpl implements NetworkInfo {
     return connectivity.onConnectivityChanged;
   }
 }
-

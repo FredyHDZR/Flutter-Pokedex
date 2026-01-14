@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../constants/breakpoints.dart';
+import 'package:flutter_pokedex/core/constants/breakpoints.dart';
 
 extension BuildContextExtensions on BuildContext {
   ThemeData get theme => Theme.of(this);
@@ -48,4 +48,3 @@ extension ListExtensions<T> on List<T> {
     return chunks;
   }
 }
-

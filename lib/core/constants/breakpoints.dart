@@ -4,8 +4,6 @@ class Breakpoints {
   static const double desktop = 1440;
 
   static bool isMobile(double width) => width < mobile;
-  static bool isTablet(double width) =>
-      width >= mobile && width < tablet;
+  static bool isTablet(double width) => width >= mobile && width < tablet;
   static bool isDesktop(double width) => width >= tablet;
 }
-

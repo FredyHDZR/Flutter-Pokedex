@@ -4,4 +4,3 @@ class AppConstants {
   static const Duration networkTimeout = Duration(seconds: 30);
   static const int maxRetries = 3;
 }
-

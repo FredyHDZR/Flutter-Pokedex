@@ -1,24 +1,24 @@
 import 'package:dartz/dartz.dart';
-import '../../core/error/exceptions.dart';
-import '../../core/error/failures.dart';
-import '../../core/error/failure_mapper.dart';
-import '../../core/network/network_info.dart';
-import '../../domain/models/pokemon.dart';
-import '../../domain/models/pokemon_detail.dart';
-import '../../domain/repositories/pokemon_repository.dart';
-import '../datasources/pokemon_remote_datasource.dart';
-import '../datasources/pokemon_local_datasource.dart';
+import 'package:flutter_pokedex/core/error/exceptions.dart';
+import 'package:flutter_pokedex/core/error/failure_mapper.dart';
+import 'package:flutter_pokedex/core/error/failures.dart';
+import 'package:flutter_pokedex/core/network/network_info.dart';
+import 'package:flutter_pokedex/data/datasources/pokemon_local_datasource.dart';
+import 'package:flutter_pokedex/data/datasources/pokemon_remote_datasource.dart';
+import 'package:flutter_pokedex/domain/models/pokemon.dart';
+import 'package:flutter_pokedex/domain/models/pokemon_detail.dart';
+import 'package:flutter_pokedex/domain/repositories/pokemon_repository.dart';
 
 class PokemonRepositoryImpl implements PokemonRepository {
-  final PokemonRemoteDataSource remoteDataSource;
-  final PokemonLocalDataSource localDataSource;
-  final NetworkInfo networkInfo;
-
   PokemonRepositoryImpl({
     required this.remoteDataSource,
     required this.localDataSource,
     required this.networkInfo,
   });
+
+  final PokemonRemoteDataSource remoteDataSource;
+  final PokemonLocalDataSource localDataSource;
+  final NetworkInfo networkInfo;
 
   @override
   Future<Either<Failure, List<Pokemon>>> getPokemonList({
@@ -32,12 +32,12 @@ class PokemonRepositoryImpl implements PokemonRepository {
           offset: offset,
         );
 
-        localDataSource.cachePokemonList(remotePokemons).catchError((_) {
-          // Error al guardar en caché no debe fallar la operación
-        });
+        await localDataSource
+            .cachePokemonList(remotePokemons)
+            .catchError((_) => null);
 
         return Right(remotePokemons);
-      } on ServerException catch (e) {
+      } on ServerException {
         return _getFromCache(limit: limit, offset: offset);
       } catch (e) {
         return Left(FailureMapper.mapExceptionToFailure(e as Exception));
@@ -65,7 +65,9 @@ class PokemonRepositoryImpl implements PokemonRepository {
     } on CacheException catch (e) {
       return Left(CacheFailure(message: e.message));
     } catch (e) {
-      return Left(CacheFailure(message: 'Error al leer caché: ${e.toString()}'));
+      return Left(
+        CacheFailure(message: 'Error al leer caché: ${e.toString()}'),
+      );
     }
   }
 
@@ -77,12 +79,12 @@ class PokemonRepositoryImpl implements PokemonRepository {
       try {
         final remoteDetail = await remoteDataSource.getPokemonDetail(id: id);
 
-        localDataSource.cachePokemonDetail(remoteDetail).catchError((_) {
-          // Error al guardar en caché no debe fallar la operación
-        });
+        await localDataSource
+            .cachePokemonDetail(remoteDetail)
+            .catchError((_) => null);
 
         return Right(remoteDetail);
-      } on ServerException catch (e) {
+      } on ServerException {
         return _getDetailFromCache(id: id);
       } catch (e) {
         return Left(FailureMapper.mapExceptionToFailure(e as Exception));
@@ -106,8 +108,9 @@ class PokemonRepositoryImpl implements PokemonRepository {
     } on CacheException catch (e) {
       return Left(CacheFailure(message: e.message));
     } catch (e) {
-      return Left(CacheFailure(message: 'Error al leer detalle: ${e.toString()}'));
+      return Left(
+        CacheFailure(message: 'Error al leer detalle: ${e.toString()}'),
+      );
     }
   }
 }
-

@@ -15,4 +15,3 @@ class Pokemon with _$Pokemon {
   factory Pokemon.fromJson(Map<String, dynamic> json) =>
       _$PokemonFromJson(json);
 }
-

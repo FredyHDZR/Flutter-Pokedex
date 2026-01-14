@@ -4,4 +4,3 @@ class ApiConstants {
   static const String imageBaseUrl =
       'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon';
 }
-

@@ -15,20 +15,19 @@ class PokemonDetailLoading extends PokemonDetailState {
 }
 
 class PokemonDetailLoaded extends PokemonDetailState {
-  final PokemonDetail pokemon;
 
   const PokemonDetailLoaded({required this.pokemon});
+  final PokemonDetail pokemon;
 
   @override
   List<Object?> get props => [pokemon];
 }
 
 class PokemonDetailError extends PokemonDetailState {
-  final String message;
 
   const PokemonDetailError({required this.message});
+  final String message;
 
   @override
   List<Object?> get props => [message];
 }
-

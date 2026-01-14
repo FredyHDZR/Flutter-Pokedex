@@ -24,4 +24,3 @@ class TypeInfo with _$TypeInfo {
   factory TypeInfo.fromJson(Map<String, dynamic> json) =>
       _$TypeInfoFromJson(json);
 }
-

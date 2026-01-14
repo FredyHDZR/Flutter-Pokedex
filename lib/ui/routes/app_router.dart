@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_pokedex/ui/pages/pokemon_detail_page.dart';
+import 'package:flutter_pokedex/ui/pages/pokemon_list_page.dart';
 import 'package:go_router/go_router.dart';
-import '../pages/pokemon_list_page.dart';
-import '../pages/pokemon_detail_page.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/',
@@ -13,11 +14,19 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/pokemon/:id',
       name: 'pokemon-detail',
-      builder: (context, state) {
+      pageBuilder: (context, state) {
         final id = int.parse(state.pathParameters['id']!);
-        return PokemonDetailPage(pokemonId: id);
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: PokemonDetailPage(pokemonId: id),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+        );
       },
     ),
   ],
 );
-

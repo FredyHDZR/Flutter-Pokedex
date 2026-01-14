@@ -1,6 +1,6 @@
 abstract class AppException implements Exception {
-  final String message;
   AppException({required this.message});
+  final String message;
 }
 
 class ServerException extends AppException {
@@ -22,4 +22,3 @@ class NotFoundException extends AppException {
 class ValidationException extends AppException {
   ValidationException({required super.message});
 }
-

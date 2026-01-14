@@ -1,15 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../domain/models/pokemon.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_pokedex/domain/models/pokemon.dart';
 
 class PokemonCard extends StatelessWidget {
+
+  const PokemonCard({required this.pokemon, this.onTap, super.key});
+
   final Pokemon pokemon;
   final VoidCallback? onTap;
-
-  const PokemonCard({
-    required this.pokemon,
-    this.onTap,
-  });
 
   @override
   Widget build(BuildContext context) {
@@ -60,4 +58,3 @@ class PokemonCard extends StatelessWidget {
     );
   }
 }
-
