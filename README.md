@@ -143,28 +143,6 @@ Los modelos de dominio utilizan freezed para garantizar inmutabilidad. Esto prev
 
 **Paquetes utilizados**: freezed para inmutabilidad y generación de código, equatable para comparación de objetos, json_serializable para serialización.
 
-## Testing
-
-**Qué se testeó y por qué**:
-
-Se priorizó el testing de la lógica de negocio crítica:
-
-- **Cubits**: Se testearon los Cubits (PokemonListCubit y PokemonDetailCubit) porque contienen la lógica de transformación de datos y manejo de estados. Se verificó que los estados se emiten correctamente, que la paginación funciona, y que los errores se mapean apropiadamente.
-
-- **Repository**: Se testearon los métodos del Repository porque implementan la lógica crítica de Cache-Aside y determinan el flujo de datos entre API y caché local.
-
-- **Modelos**: Se testearon los modelos para verificar que la serialización/deserialización funciona correctamente, ya que un error aquí afectaría toda la aplicación.
-
-**Tests que se agregarían primero (prioridad)**:
-
-1. **Tests de integración para DataSources**: Verificar que RemoteDataSource obtiene datos correctamente de la API real y que LocalDataSource persiste y recupera datos de Hive correctamente. Estos tests asegurarían que la capa de datos funciona end-to-end.
-
-2. **Tests de widgets críticos**: Testear widgets como PokemonCard y PokemonDetailPage para verificar que renderizan correctamente con diferentes estados y datos. Esto aseguraría que la UI responde correctamente a los cambios de estado.
-
-3. **Tests de navegación**: Verificar que go_router navega correctamente entre rutas y que los parámetros se pasan correctamente. Esto aseguraría que la navegación funciona en todas las plataformas.
-
-**Paquetes utilizados**: flutter_test (SDK de Flutter), bloc_test para testing de Cubits, mocktail para creación de mocks.
-
 ## Git
 
 **Estructura de commits**:
@@ -189,22 +167,3 @@ Se utilizó la convención Conventional Commits en español para facilitar el re
 - **Commits atómicos**: Cada commit compila sin errores y mantiene la aplicación en un estado funcional. No se hicieron commits con múltiples features no relacionadas.
 
 Esta estructura facilita el review porque permite entender rápidamente qué cambió y en qué capa, y facilita el mantenimiento porque permite hacer cherry-pick de commits específicos o revertir cambios puntuales.
-
-## Pendientes
-
-Lista priorizada de features que se dejaron fuera y cómo se implementarían:
-
-**1. Búsqueda y Filtrado de Pokémon**:
-Se implementaría agregando un método `searchPokemon` en el Repository que consulte la API con parámetros de búsqueda. En el Cubit se agregaría un estado `PokemonListSearching` y un método `searchPokemons(String query)`. En la UI se agregaría un TextField en el AppBar con debouncing para evitar requests excesivos.
-
-**2. Favoritos**:
-Se implementaría creando un nuevo Box en Hive para almacenar IDs de Pokémon favoritos. Se agregaría un método `toggleFavorite` en el Repository y un estado `isFavorite` en los modelos. En la UI se agregaría un botón de favorito en cada card y una pantalla de favoritos.
-
-**3. Compartir Pokémon**:
-Se implementaría usando el paquete share_plus para compartir información del Pokémon. Se agregaría un método en PokemonDetailPage que formatee la información del Pokémon y la comparta mediante la API nativa de compartir.
-
-**4. Modo Oscuro**:
-Se implementaría agregando un ThemeData oscuro en AppTheme y un cubit ThemeCubit para manejar el cambio de tema. Se persistiría la preferencia en SharedPreferences o Hive.
-
-**5. Animaciones de Transición Mejoradas**:
-Se implementaría usando el paquete animations de Flutter para crear transiciones más sofisticadas entre pantallas, incluyendo hero animations para las imágenes de Pokémon al navegar del listado al detalle.
