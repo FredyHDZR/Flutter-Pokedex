@@ -1,0 +1,113 @@
+import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_pokedex/core/constants/app_constants.dart';
+import 'package:flutter_pokedex/core/error/failures.dart';
+import 'package:flutter_pokedex/domain/models/pokemon.dart';
+import 'package:flutter_pokedex/domain/repositories/pokemon_repository.dart';
+
+part 'pokemon_list_state.dart';
+
+class PokemonListCubit extends Cubit<PokemonListState> {
+  PokemonListCubit({required this.repository}) : super(PokemonListInitial());
+  final PokemonRepository repository;
+
+  Future<void> loadPokemons({bool refresh = false}) async {
+    if (refresh) {
+      emit(PokemonListLoading());
+    } else if (state is PokemonListLoaded) {
+      final currentState = state as PokemonListLoaded;
+      emit(currentState.copyWith(isRefreshing: true));
+    } else {
+      emit(PokemonListLoading());
+    }
+
+    try {
+      final result = await repository.getPokemonList(
+        limit: AppConstants.defaultPokemonLimit,
+        offset: 0,
+      );
+
+      result.fold(
+        (failure) => emit(
+          PokemonListError(
+            message: _mapFailureToMessage(failure),
+          ),
+        ),
+        (pokemons) => emit(
+          PokemonListLoaded(
+            pokemons: pokemons,
+            hasMore: pokemons.length == AppConstants.defaultPokemonLimit,
+            currentOffset: pokemons.length,
+            limit: AppConstants.defaultPokemonLimit,
+          ),
+        ),
+      );
+    } catch (e) {
+      emit(
+        PokemonListError(
+          message: 'Error inesperado: ${e.toString()}',
+        ),
+      );
+    }
+  }
+
+  Future<void> loadMorePokemons() async {
+    final currentState = state;
+    if (currentState is! PokemonListLoaded ||
+        currentState.isLoadingMore ||
+        !currentState.hasMore) {
+      return;
+    }
+
+    emit(currentState.copyWith(isLoadingMore: true));
+
+    try {
+      final result = await repository.getPokemonList(
+        limit: currentState.limit,
+        offset: currentState.currentOffset,
+      );
+
+      result.fold(
+        (failure) => emit(
+          PokemonListError(
+            message: _mapFailureToMessage(failure),
+          ),
+        ),
+        (newPokemons) {
+          final updatedPokemons = [
+            ...currentState.pokemons,
+            ...newPokemons,
+          ];
+
+          emit(
+            currentState.copyWith(
+              pokemons: updatedPokemons,
+              isLoadingMore: false,
+              currentOffset: currentState.currentOffset + newPokemons.length,
+              hasMore: newPokemons.length == currentState.limit,
+            ),
+          );
+        },
+      );
+    } catch (e) {
+      emit(
+        PokemonListError(
+          message: 'Error al cargar más: ${e.toString()}',
+        ),
+      );
+    }
+  }
+
+  String _mapFailureToMessage(Failure failure) {
+    switch (failure.runtimeType) {
+      case ServerFailure _:
+        return 'Error del servidor. Intenta de nuevo.';
+      case NetworkFailure _:
+        return 'Sin conexión a internet.';
+      case CacheFailure _:
+        return 'Error al cargar datos guardados.';
+      default:
+        return 'Error inesperado.';
+    }
+  }
+}
