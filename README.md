@@ -142,28 +142,3 @@ Se utilizan nombres que expresan claramente la intención del código. Por ejemp
 Los modelos de dominio utilizan freezed para garantizar inmutabilidad. Esto previene bugs por mutaciones accidentales y facilita el razonamiento sobre el estado de la aplicación. Los estados de los Cubits también son inmutables usando freezed y equatable.
 
 **Paquetes utilizados**: freezed para inmutabilidad y generación de código, equatable para comparación de objetos, json_serializable para serialización.
-
-## Git
-
-**Estructura de commits**:
-
-Se utilizó la convención Conventional Commits en español para facilitar el review y mantenimiento:
-
-- **Granularidad**: Cada commit representa una feature lógica completa y funcional. Por ejemplo, un commit para crear el modelo Pokemon, otro para implementar RemoteDataSource, otro para la UI del listado.
-
-- **Mensajes descriptivos**: Los mensajes siguen el formato `tipo(scope): descripción breve`. Por ejemplo: `feat(domain): crear modelo PokemonDetail completo`, `feat(data): implementar RemoteDataSource para PokéAPI`.
-
-- **Tipos utilizados**: 
-  - `feat`: Nueva funcionalidad
-  - `fix`: Corrección de bug
-  - `refactor`: Refactorización sin cambio de funcionalidad
-  - `test`: Agregar o modificar tests
-  - `docs`: Documentación
-  - `chore`: Tareas de mantenimiento, configuración
-  - `perf`: Mejoras de performance
-
-- **Scopes por capa**: Se utilizaron scopes como `core`, `domain`, `data`, `ui` para indicar en qué capa se realizó el cambio.
-
-- **Commits atómicos**: Cada commit compila sin errores y mantiene la aplicación en un estado funcional. No se hicieron commits con múltiples features no relacionadas.
-
-Esta estructura facilita el review porque permite entender rápidamente qué cambió y en qué capa, y facilita el mantenimiento porque permite hacer cherry-pick de commits específicos o revertir cambios puntuales.
